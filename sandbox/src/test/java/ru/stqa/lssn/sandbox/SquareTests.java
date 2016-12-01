@@ -4,9 +4,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
-/**
- * Created by ivan on 26.11.2016.
- */
 public class SquareTests {
 
     @Test
