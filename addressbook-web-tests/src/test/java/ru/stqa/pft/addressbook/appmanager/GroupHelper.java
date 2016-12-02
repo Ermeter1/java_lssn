@@ -11,6 +11,7 @@ public class GroupHelper extends HelperBase{
     }
 
     public void returnToGroupPage() {
+        //возможно этот метод лучше перенести в NavigationHelper
         click(By.linkText("group page"));
     }
 
