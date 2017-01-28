@@ -62,26 +62,36 @@ public class ContactHelper extends HelperBase{
         click(By.name("update"));
     }
 
-    public void createContact(ContactData contact, boolean creation) {
+    public void create(ContactData contact, boolean creation) {
         initContactCreation();
         fillContactForm(contact, creation);
         submitContactCreation();
         returnToHomePage();
     }
 
-    public void modifyContact(int index, ContactData contact) {
+    public void modify(int index, ContactData contact) {
         initContactModification(index);
         fillContactForm(contact, false);
         submitContactModification();
         returnToHomePage();
     }
 
+    public void delete(int index) {
+        selectContact(index);
+        //при выполнении теста почему то не удаляется контакт, (тест проходит успешно, но контакт не удален) если дебажить, то контакт удаляется, не понятно.
+        deleteSelectedContact();
+        //было так
+        //app.goTo().homePage();
+        returnToHomePage();
+    }
+
+
 
     public boolean isThereAContact() {
         return isElementPresent(By.name("selected[]"));
     }
 
-    public List<ContactData> getContactList() {
+    public List<ContactData> list() {
         List<ContactData> contacts = new ArrayList<ContactData>();
         List<WebElement> elements = wd.findElements(By.cssSelector("tr[name]"));
         for (WebElement element : elements){
