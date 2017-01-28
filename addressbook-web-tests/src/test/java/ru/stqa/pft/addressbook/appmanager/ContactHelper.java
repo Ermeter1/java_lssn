@@ -42,7 +42,7 @@ public class ContactHelper extends HelperBase{
 
     public void returnToHomePage() {
         //возможно этот метод лучше перенести в NavigationHelper
-        click(By.linkText("home page"));
+        click(By.linkText("home"));
     }
 
     public void selectContact(int index) {
@@ -98,8 +98,7 @@ public class ContactHelper extends HelperBase{
             String lastName = element.findElement(By.xpath("//td[2]")).getText();
             String firstName = element.findElement(By.xpath("//td[3]")).getText();
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-            ContactData contact = new ContactData(id, lastName, firstName, null, null, null, null);
-            contacts.add(contact);
+            contacts.add(new ContactData().withId(id).withLastname(lastName).withFirstname(firstName));
         }
         return contacts;
     }

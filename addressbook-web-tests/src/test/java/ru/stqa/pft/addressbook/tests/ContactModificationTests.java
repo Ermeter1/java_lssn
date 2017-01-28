@@ -15,7 +15,9 @@ public class ContactModificationTests extends TestBase{
         app.goTo().homePage();
         if (app.contact().list().size() == 0){
             //при создании контакта указывается группа [none], дабы не делать проверку на наличие указываемой группы
-            app.contact().create(new ContactData("Bilbo", "Baggins", "Shire","8(800)8008080","bilbo@mail.ru", "[none]"), true);
+            app.contact().create(new ContactData()
+                    .withFirstname("Bilbo").withLastname("Baggins").withAddress("Shire")
+                    .withMobile("8(800)8008080").withEmail("bilbo@mail.ru").withGroup("[none]"), true);
         }
     }
 
@@ -23,7 +25,9 @@ public class ContactModificationTests extends TestBase{
     public void testContactModification(){
         List<ContactData> before = app.contact().list();
         int index = before.size()-1;
-        ContactData contact = new ContactData(before.get(index).getId(), "B","B","B","B","B", null);
+        ContactData contact = new ContactData()
+                .withId(before.get(index).getId()).withFirstname("B").withLastname("B").withAddress("B")
+                .withMobile("B").withEmail("B");
 
         app.contact().modify(index, contact);
         List<ContactData> after = app.contact().list();

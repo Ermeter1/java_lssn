@@ -14,7 +14,9 @@ public class ContactDeletionTests extends TestBase{
         app.goTo().homePage();
         if (app.contact().list().size() == 0){
             //при создании контакта указывается группа [none], дабы не делать проверку на наличие указываемой группы
-            app.contact().create(new ContactData("Bilbo", "Baggins", "Shire","8(800)8008080","bilbo@mail.ru", "[none]"), true);
+            app.contact().create(new ContactData()
+                    .withFirstname("Bilbo").withLastname("Baggins").withAddress("Shire")
+                    .withMobile("8(800)8008080").withEmail("bilbo@mail.ru").withGroup("[none]"), true);
         }
     }
 
