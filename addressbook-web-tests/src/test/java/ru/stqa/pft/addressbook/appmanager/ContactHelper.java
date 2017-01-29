@@ -1,16 +1,15 @@
 package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ContactHelper extends HelperBase{
 
@@ -45,18 +44,21 @@ public class ContactHelper extends HelperBase{
         click(By.linkText("home"));
     }
 
-    public void selectContact(int index) {
-        wd.findElements(By.name("selected[]")).get(index).click();
+    public void selectContactById(int id) {
+        wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
     }
+
 
     public void deleteSelectedContact() {
         click(By.xpath("//div[@id='content']/form[2]/div[2]/input"));
         wd.switchTo().alert().accept();
     }
 
-    public void initContactModification(int index) {
-        click(By.xpath("//table[@id='maintable']/tbody/tr[" + (index +2) + "]/td[8]/a/img"));
+
+    private void initContactModificationById(int id) {
+        click(By.cssSelector("a[href='edit.php?id=" + id + "']"));
     }
+
 
     public void submitContactModification() {
         click(By.name("update"));
@@ -69,19 +71,18 @@ public class ContactHelper extends HelperBase{
         returnToHomePage();
     }
 
-    public void modify(int index, ContactData contact) {
-        initContactModification(index);
+    public void modify(ContactData contact) {
+        initContactModificationById(contact.getId());
+        //selectContactById(contact.getId());
         fillContactForm(contact, false);
         submitContactModification();
         returnToHomePage();
     }
 
-    public void delete(int index) {
-        selectContact(index);
-        //при выполнении теста почему то не удаляется контакт, (тест проходит успешно, но контакт не удален) если дебажить, то контакт удаляется, не понятно.
+
+    public void delete(ContactData contact) {
+        selectContactById(contact.getId());
         deleteSelectedContact();
-        //было так
-        //app.goTo().homePage();
         returnToHomePage();
     }
 
@@ -91,15 +92,18 @@ public class ContactHelper extends HelperBase{
         return isElementPresent(By.name("selected[]"));
     }
 
-    public List<ContactData> list() {
-        List<ContactData> contacts = new ArrayList<ContactData>();
-        List<WebElement> elements = wd.findElements(By.cssSelector("tr[name]"));
+    public Set<ContactData> all() {
+        Set<ContactData> contacts = new HashSet<>();
+        List<WebElement> elements = wd.findElements(By.cssSelector("tr[name = 'entry']"));
         for (WebElement element : elements){
-            String lastName = element.findElement(By.xpath("//td[2]")).getText();
-            String firstName = element.findElement(By.xpath("//td[3]")).getText();
+            List<WebElement> cells = element.findElements(By.tagName("td"));
+            String lastName = cells.get(1).getText();
+            String firstName = cells.get(2).getText();
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
             contacts.add(new ContactData().withId(id).withLastname(lastName).withFirstname(firstName));
         }
         return contacts;
     }
+
+
 }
