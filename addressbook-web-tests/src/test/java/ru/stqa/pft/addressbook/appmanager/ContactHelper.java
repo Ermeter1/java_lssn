@@ -8,9 +8,7 @@ import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ContactHelper extends HelperBase{
 
@@ -22,7 +20,7 @@ public class ContactHelper extends HelperBase{
         type(By.name("firstname"), contactData.getFirstname());
         type(By.name("lastname"), contactData.getLastname());
         type(By.name("address"), contactData.getAddress());
-        type(By.name("mobile"), contactData.getMobile());
+        type(By.name("mobile"), contactData.getMobilePhone());
         type(By.name("email"), contactData.getEmail());
 
         if (creation) {
@@ -55,9 +53,22 @@ public class ContactHelper extends HelperBase{
         wd.switchTo().alert().accept();
     }
 
+    public ContactData infoFromEditForm(ContactData contact) {
+        initContactModificationById(contact.getId());
+        String firstname = wd.findElement(By.name("firstname")).getAttribute("value");
+        String lastname = wd.findElement(By.name("lastname")).getAttribute("value");
+        String home = wd.findElement(By.name("home")).getAttribute("value");
+        String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
+        String work = wd.findElement(By.name("work")).getAttribute("value");
+        wd.navigate().back();
+        return new ContactData().withId(contact.getId()).withFirstname(firstname).withLastname(lastname)
+                .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work);
+    }
+
 
     private void initContactModificationById(int id) {
         click(By.cssSelector("a[href='edit.php?id=" + id + "']"));
+        //wd.findElement(By.cssSelector(String.format("a[href='edit.php?id=''%s]", id))).click();
     }
 
 
@@ -118,4 +129,5 @@ public class ContactHelper extends HelperBase{
     public int count() {
         return wd.findElements(By.name("selected[]")).size();
     }
+
 }

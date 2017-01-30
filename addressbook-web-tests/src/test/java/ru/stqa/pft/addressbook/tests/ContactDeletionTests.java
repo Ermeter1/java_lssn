@@ -1,14 +1,9 @@
 package ru.stqa.pft.addressbook.tests;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
-
-import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -23,7 +18,7 @@ public class ContactDeletionTests extends TestBase{
             //при создании контакта указывается группа [none], дабы не делать проверку на наличие указываемой группы
             app.contact().create(new ContactData()
                     .withFirstname("Bilbo").withLastname("Baggins").withAddress("Shire")
-                    .withMobile("8(800)8008080").withEmail("bilbo@mail.ru").withGroup("[none]"), true);
+                    .withMobilePhone("8(800)8008080").withEmail("bilbo@mail.ru").withGroup("[none]"), true);
         }
     }
 
