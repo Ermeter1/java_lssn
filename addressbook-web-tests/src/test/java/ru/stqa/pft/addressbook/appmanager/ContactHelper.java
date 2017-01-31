@@ -71,6 +71,10 @@ public class ContactHelper extends HelperBase{
                 .withEmail2(email2).withEmail3(email3).withAddress(address);
     }
 
+    public void initContactDetailsById(int id) {
+        click(By.cssSelector("a[href='view.php?id=" + id + "']"));
+    }
+
 
     private void initContactModificationById(int id) {
         click(By.cssSelector("a[href='edit.php?id=" + id + "']"));
@@ -142,4 +146,7 @@ public class ContactHelper extends HelperBase{
         return wd.findElements(By.name("selected[]")).size();
     }
 
+    public String detailsContent(){
+        return wd.findElement(By.id("content")).getText();
+    }
 }
